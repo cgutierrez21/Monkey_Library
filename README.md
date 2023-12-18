@@ -28,7 +28,7 @@ To run
 ``` bash
 g++ main.cpp -o book_database -lsqlite3
 ```
-- Or use an IDE. Projject was started and run through CLion.
+- Or use an IDE. Project was started and run through CLion.
 
 ## Usage
 When running, there are on-screen instructions to interact with the book database. Use commands to add new books, and view the list of books. Other features will be added at a later time.
