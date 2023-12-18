@@ -1,0 +1,3 @@
+/Users/cristiangutierrez/Programming/CPP/Projects/Monkey_Library/cmake-build-debug/CMakeFiles/Monkey_Library.dir
+/Users/cristiangutierrez/Programming/CPP/Projects/Monkey_Library/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/cristiangutierrez/Programming/CPP/Projects/Monkey_Library/cmake-build-debug/CMakeFiles/rebuild_cache.dir
