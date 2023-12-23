@@ -2,7 +2,9 @@
 #include <iostream>
 #include <string>
 
-// TODO: clear terminal, get user input when done looking at printed database/search, fix for new column
+// TODO: clear terminal
+// TODO: get user input when done looking at printed database/search
+// DONE: fix colum error
 
 int menu ();
 int add_to_database (sqlite3 *db, int rc);
@@ -124,7 +126,7 @@ int add_to_database (sqlite3 *db, int rc) {
     } 
 
     // Prepare SQL statement
-    const char *sql = "INSERT INTO books (title, first_name, last_name, rating, read?) VALUES (?, ?, ?, ?, ?);";
+    const char *sql = "INSERT INTO books (title, first_name, last_name, rating, \"read?\") VALUES (?, ?, ?, ?, ?);";
     sqlite3_stmt *stmt;
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
