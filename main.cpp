@@ -5,9 +5,6 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-// TODO: clear terminal
-// TODO: get user input when done looking at printed database/search
-// DONE: fix colum error
 
 int menu ();
 int add_to_database (sqlite3 *db, int rc);
@@ -15,6 +12,7 @@ int print_database (sqlite3 *db, int rc);
 void fill_terminal(); 
 int search_criteria ();
 void search_database(sqlite3 *db, int rc, int criteria);
+void app_title();
 
 int main () {
     bool remain_open = true;
@@ -36,7 +34,6 @@ int main () {
         return 1;
     }
     else {
-        std::cout << "Database open. Good to go!" << std::endl;
         std::cout << std::endl;
     }
 
@@ -69,10 +66,18 @@ int main () {
             case 0:
                 switch (action) {
                     case 1:
-                        std::cout << "\nSuccessful addition to database!\n" << std::endl;
+                        #ifdef _WIN32
+                            system("cls");
+                        #elif __linux__ || __APPLE__
+                            system("clear");
+                        #endif
                         break;
                     case 2:
-                        std::cout << "\nFinished printing database!\n" << std::endl;
+                        #ifdef _WIN32
+                            system("cls");
+                        #elif __linux__ || __APPLE__
+                            system("clear");
+                        #endif
                         break;
                     default:
                         break;
@@ -99,6 +104,7 @@ int main () {
 }
 
 int menu (){
+    app_title();
     // Menu
     std::cout << "1. Add to database" << std::endl;
     std::cout << "2. Print database" << std::endl;
@@ -170,18 +176,12 @@ int add_to_database (sqlite3 *db, int rc) {
     // Finalize
     sqlite3_finalize(stmt);
 
-    #ifdef _WIN32 
-        system("cls");
-    #elif __linux__ || __APPLE__
-        system("clear");
-    #endif
-
     return 0;
 }
 
 int print_database (sqlite3 *db, int rc) {
     // Printing database
-    std::cout << "Printing database..." << std::endl;
+    app_title();
     const char *sql = "SELECT * FROM books;";
     sqlite3_stmt *stmt;
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
@@ -227,12 +227,6 @@ int print_database (sqlite3 *db, int rc) {
     std::cout << "When done, press enter to continue...";
     std::cin.get();
 
-    #ifdef _WIN32
-        system("cls");
-    #elif __linux__ || __APPLE__
-        system("clear");
-    #endif
-
     return 0;
 }
 
@@ -255,6 +249,11 @@ int search_criteria () {
     std::cin >> search_type;
     std::cin.ignore();
     std::string search_term;
+#ifdef _WIN32
+    system("cls");
+#elif __linux__ || __APPLE__
+    system("clear");
+#endif
     switch (search_type) {
         case 1:
             return 1;
@@ -277,18 +276,21 @@ void search_database(sqlite3 *db, int rc, int criteria) {
     switch (criteria) {
         case 1:
             search_column = "title";
+            std::cout << "Enter title: ";
             break;
         case 2:
             search_column = "first_name";
+            std::cout << "Enter first name: ";
             break;
         case 3:
             search_column = "last_name";
+            std::cout << "Enter last name: ";
             break;
         case 4:
             search_column = "rating";
+            std::cout << "Enter rating: ";
             break;
     }
-    std::cout << "Enter search term: ";
     std::getline(std::cin, search_condition);
     std::cout << "\nResults" << std::endl;
 
@@ -339,4 +341,10 @@ void search_database(sqlite3 *db, int rc, int criteria) {
     #endif
 
     sqlite3_finalize(stmt);
+}
+
+void app_title() {
+    std::cout << "╔╦╗┌─┐┌┐┌┬┌─┌─┐┬ ┬  ╦  ┬┌┐ ┬─┐┌─┐┬─┐┬ ┬" << std::endl;
+    std::cout << "║║║│ ││││├┴┐├┤ └┬┘  ║  │├┴┐├┬┘├─┤├┬┘└┬┘" << std::endl;
+    std::cout << "╩ ╩└─┘┘└┘┴ ┴└─┘ ┴   ╩═╝┴└─┘┴└─┴ ┴┴└─ ┴" << std::endl;
 }
