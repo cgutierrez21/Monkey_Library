@@ -1,6 +1,9 @@
 #include <sqlite3.h>
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <unistd.h>
+#include <sys/ioctl.h>
 
 // TODO: clear terminal
 // TODO: get user input when done looking at printed database/search
@@ -9,6 +12,7 @@
 int menu ();
 int add_to_database (sqlite3 *db, int rc);
 int print_database (sqlite3 *db, int rc);
+void fill_terminal(); 
 int search_criteria ();
 void search_database(sqlite3 *db, int rc, int criteria);
 
@@ -85,6 +89,12 @@ int main () {
 
     sqlite3_close(db);
 
+#ifdef _WIN32
+    system("cls");
+#elif __linux__ || __APPLE__
+    system("clear");
+#endif
+
     return 0;
 }
 
@@ -99,6 +109,13 @@ int menu (){
     std::cin >> choice;
     std::cin.ignore();
     std::cout << std::endl;
+
+    #ifdef _WIN32 
+        system("cls");
+    #elif __linux__ || __APPLE__
+        system("clear");
+    #endif
+
     return choice;
 }
 
@@ -153,6 +170,12 @@ int add_to_database (sqlite3 *db, int rc) {
     // Finalize
     sqlite3_finalize(stmt);
 
+    #ifdef _WIN32 
+        system("cls");
+    #elif __linux__ || __APPLE__
+        system("clear");
+    #endif
+
     return 0;
 }
 
@@ -190,6 +213,7 @@ int print_database (sqlite3 *db, int rc) {
             }
         }
         std::cout << std::endl;
+        fill_terminal();
     }
 
     if (rc != SQLITE_DONE) {
@@ -200,7 +224,24 @@ int print_database (sqlite3 *db, int rc) {
 
     sqlite3_finalize(stmt);
 
+    std::cout << "When done, press enter to continue...";
+    std::cin.get();
+
+    #ifdef _WIN32
+        system("cls");
+    #elif __linux__ || __APPLE__
+        system("clear");
+    #endif
+
     return 0;
+}
+
+void fill_terminal() {
+    struct winsize size;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+    for (unsigned int i {0}; i < size.ws_col; ++i) {
+        std::cout << "-";
+    }
 }
 
 int search_criteria () {
@@ -269,14 +310,33 @@ void search_database(sqlite3 *db, int rc, int criteria) {
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
         for (int i {0}; i < sqlite3_column_count(stmt); i++) {
             const char *column_value = reinterpret_cast<const char *>(sqlite3_column_text(stmt, i));
-            std::cout << column_value << " | " ;
+            if (std::string(sqlite3_column_name(stmt, i)) == "read?") {
+                int read_value = sqlite3_column_int(stmt, i);
+                if (read_value == 1) {
+                    std::cout << "Read" << " | ";
+                } else {
+                    std::cout << "Not Read" << " | ";
+                }
+            } else {
+                std::cout << column_value << " | " ;
+            }
         }
-        std::cout << "\n" << std::endl;
+        std::cout <<  std::endl;
+        fill_terminal();
     }
 
     if (rc != SQLITE_DONE) {
         std::cerr << "Error executing statement: " << sqlite3_errmsg(db) << std::endl << std::endl;
     }
+
+    std::cout << "\nWhen done, press enter to continue...";
+    std::cin.get();
+
+    #ifdef _WIN32
+        system("cls");
+    #elif __linux__ || __APPLE__
+        system("clear");
+    #endif
 
     sqlite3_finalize(stmt);
 }
