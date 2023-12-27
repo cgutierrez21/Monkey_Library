@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
+// TODO: sort data alphabetically
 
 int menu ();
 int add_to_database (sqlite3 *db, int rc);
@@ -182,7 +183,7 @@ int add_to_database (sqlite3 *db, int rc) {
 int print_database (sqlite3 *db, int rc) {
     // Printing database
     app_title();
-    const char *sql = "SELECT * FROM books;";
+    const char *sql = "SELECT * FROM books ORDER BY title;";
     sqlite3_stmt *stmt;
     rc = sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
@@ -191,12 +192,13 @@ int print_database (sqlite3 *db, int rc) {
         return 1;
     }
 
+    std::cout << "| Title by Author | Rating | Read?" << std::endl;
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
         int columncount = sqlite3_column_count(stmt);
         for (int i = 0; i < columncount; i++) {
             const char *columnName = sqlite3_column_name(stmt, i);
             if (std::string(columnName) == "title") {
-                std::cout << sqlite3_column_text(stmt, i) << ": ";
+                std::cout << "| " << sqlite3_column_text(stmt, i) << " by ";
             } else if ( std::string(columnName) == "last_name") {
                 std::cout << sqlite3_column_text(stmt, i) << " | ";
             } else if ( std::string(columnName) == "rating") {
@@ -292,9 +294,10 @@ void search_database(sqlite3 *db, int rc, int criteria) {
             break;
     }
     std::getline(std::cin, search_condition);
+    search_condition = "%" + search_condition + "%";
     std::cout << "\nResults" << std::endl;
 
-    const std::string sql = "SELECT * FROM books WHERE " + search_column + " =?;";
+    const std::string sql = "SELECT * FROM books WHERE " + search_column + " LIKE ? ORDER BY title;";
     sqlite3_stmt *stmt;
     rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
@@ -309,18 +312,21 @@ void search_database(sqlite3 *db, int rc, int criteria) {
         sqlite3_bind_text(stmt, 1, search_condition.c_str(), -1, SQLITE_STATIC);
     }
 
+    std::cout << "| Title | Author | Rating | Read?" << std::endl;
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
         for (int i {0}; i < sqlite3_column_count(stmt); i++) {
             const char *column_value = reinterpret_cast<const char *>(sqlite3_column_text(stmt, i));
             if (std::string(sqlite3_column_name(stmt, i)) == "read?") {
                 int read_value = sqlite3_column_int(stmt, i);
                 if (read_value == 1) {
-                    std::cout << "Read" << " | ";
+                    std::cout << "| Read";
                 } else {
-                    std::cout << "Not Read" << " | ";
+                    std::cout << "| Not Read";
                 }
+            } else if (std::string(sqlite3_column_name(stmt, i)) == "last_name") {
+                std::cout << column_value << " ";
             } else {
-                std::cout << column_value << " | " ;
+                std::cout << "| " << column_value << " ";
             }
         }
         std::cout <<  std::endl;
