@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-// TODO: sort data alphabetically
 
 int menu ();
 int add_to_database (sqlite3 *db, int rc);
@@ -18,6 +17,11 @@ void app_title();
 int main () {
     bool remain_open = true;
 
+    #ifdef _WIN32
+        system("cls");
+    #elif __linux__ || __APPLE__
+        system("clear");
+    #endif
     // Get home path
     const char *home = getenv("HOME");
     if (home == nullptr) {
@@ -25,7 +29,7 @@ int main () {
         return 1;
     }
     std::string database_path = std::string(home) + "/Programming/Databases/book_database.db";
-    
+
     // Open database
     sqlite3 *db;
     int rc = sqlite3_open(database_path.c_str(), &db);
@@ -127,6 +131,9 @@ int menu (){
 }
 
 int add_to_database (sqlite3 *db, int rc) {
+    
+    app_title();
+
     // Adding to database
     std::string title{};
     std::string first_name{};
@@ -145,6 +152,7 @@ int add_to_database (sqlite3 *db, int rc) {
     std::cin >> rating;
     std::cout << "Have you read the book? (y/n): ";
     std::cin >> read;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     if (read == 'y' || read == 'Y') {
         read_value = 1;
     } 
@@ -173,6 +181,10 @@ int add_to_database (sqlite3 *db, int rc) {
         sqlite3_close(db);
         return 2;
     }
+
+    std::cout << "\n" << title << " by " << first_name << " " << last_name << " added to database." << std::endl;
+    std::cout << "When when ready, press enter to continue...";
+    std::cin.get();
 
     // Finalize
     sqlite3_finalize(stmt);
@@ -353,4 +365,5 @@ void app_title() {
     std::cout << "╔╦╗┌─┐┌┐┌┬┌─┌─┐┬ ┬  ╦  ┬┌┐ ┬─┐┌─┐┬─┐┬ ┬" << std::endl;
     std::cout << "║║║│ ││││├┴┐├┤ └┬┘  ║  │├┴┐├┬┘├─┤├┬┘└┬┘" << std::endl;
     std::cout << "╩ ╩└─┘┘└┘┴ ┴└─┘ ┴   ╩═╝┴└─┘┴└─┴ ┴┴└─ ┴" << std::endl;
+    std::cout << std::endl;
 }
