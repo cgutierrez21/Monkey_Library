@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
+// TODO: make it so access to database can be done on Windows, and check if it works on Linux (since Mac is Unix based, and Linux is Unix based)
+// TODO: make it so that the database can be created if it doesn't exist
 
 int menu ();
 int add_to_database (sqlite3 *db, int rc);
