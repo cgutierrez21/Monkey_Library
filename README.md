@@ -22,7 +22,7 @@ Before running the project, ensure you have the following installed:
 ### Installation
 1. Clone the repository:
 ``` bash
-git clone https://github.com/your-username/book-database-project.git
+git clone https://github.com/cgutierrez21/Monkey_Library
 ```
 * Note: Database is in a completely different folder than project. Path used is HOME/Programming/Databases/book_database.db *
 
