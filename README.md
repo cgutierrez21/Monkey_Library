@@ -6,6 +6,7 @@ Welcome to the Book Database project! This is a learning project aimed at creati
 - SQLite Database: The project leverages the power of SQLite to efficiently store and manage book data.
 - C++ Implementation: The core functionality is implemented in C++, allowing you to explore and understand the language better.
 - Command Line Interface (CLI): The project operates through the command line, providing a foundational structure for managing books.
+<u><b>I do not have a windows machine so I don't know if any Windows related actions work properly for now.</b></u> 
 
 ## Future Plans
 - The ultimate goal is to enhance the project by adding a graphical user interface (GUI) for a more user-friendly experience.

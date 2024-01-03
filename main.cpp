@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-// TODO: make it so access to database can be done on Windows, and check if it works on Linux (since Mac is Unix based, and Linux is Unix based)
+// DONE: (I think) make it so access to database can be done on Windows, and check if it works on Linux (since Mac is Unix based, and Linux is Unix based)
 // TODO: make it so that the database can be created if it doesn't exist
 
 int menu ();
@@ -24,12 +24,21 @@ int main () {
     #elif __linux__ || __APPLE__
         system("clear");
     #endif
+
     // Get home path
+#ifdef _WIN32
+        const char *home = getenv("USERPROFILE");
+        if (home == nullptr) {
+            std::cerr << "Error getting home path" << std::endl;
+            return 1;
+        }
+#elif __linux__ || __APPLE__
     const char *home = getenv("HOME");
     if (home == nullptr) {
         std::cerr << "Error getting home path" << std::endl;
         return 1;
     }
+#endif
     std::string database_path = std::string(home) + "/Programming/Databases/book_database.db";
 
     // Open database
@@ -69,48 +78,25 @@ int main () {
                 break;
         }
 
-        switch (result) {
-            case 0:
-                switch (action) {
-                    case 1:
-                        #ifdef _WIN32
-                            system("cls");
-                        #elif __linux__ || __APPLE__
-                            system("clear");
-                        #endif
-                        break;
-                    case 2:
-                        #ifdef _WIN32
-                            system("cls");
-                        #elif __linux__ || __APPLE__
-                            system("clear");
-                        #endif
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case 1:
-                return 1;
-            case 2:
-                return 2;
-            default:
-                break;
-        }
+        #ifdef _WIN32
+            system("cls");
+        #elif __linux__ || __APPLE__
+            system("clear");
+        #endif
     }
 
     sqlite3_close(db);
 
-#ifdef _WIN32
-    system("cls");
-#elif __linux__ || __APPLE__
-    system("clear");
-#endif
+    #ifdef _WIN32
+        system("cls");
+    #elif __linux__ || __APPLE__
+        system("clear");
+    #endif
 
     return 0;
 }
 
-int menu (){
+int menu () {
     app_title();
     // Menu
     std::cout << "1. Add to database" << std::endl;
@@ -207,6 +193,7 @@ int print_database (sqlite3 *db, int rc) {
     }
 
     std::cout << "| Title by Author | Rating | Read?" << std::endl;
+    fill_terminal();
     while ((rc = sqlite3_step(stmt)) == SQLITE_ROW) {
         int columncount = sqlite3_column_count(stmt);
         for (int i = 0; i < columncount; i++) {
