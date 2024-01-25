@@ -1,7 +1,3 @@
 # ninja log v5
-685	789	1703889837588478751	Monkey_Library	d1387b76416a670d
-2	684	1703889837486321101	CMakeFiles/Monkey_Library.dir/main.cpp.o	a513f2d2ecbcdd91
-1	630	1704245229021373835	CMakeFiles/Monkey_Library.dir/main.cpp.o	17e0a93dd8232ec2
-631	753	1704245229149209472	Monkey_Library	f0a5a1fbd2ef49d0
-2	646	1704245436765092161	CMakeFiles/Monkey_Library.dir/main.cpp.o	17e0a93dd8232ec2
-646	773	1704245436895234567	Monkey_Library	f0a5a1fbd2ef49d0
+663	797	1706205060580110802	Monkey_Library	f0a5a1fbd2ef49d0
+3	663	1706205060443986291	CMakeFiles/Monkey_Library.dir/main.cpp.o	17e0a93dd8232ec2

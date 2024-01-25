@@ -8,18 +8,18 @@
 		},
 		"paths" : 
 		{
-			"cmake" : "/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake",
-			"cpack" : "/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cpack",
-			"ctest" : "/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/ctest",
-			"root" : "/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/share/cmake-3.27"
+			"cmake" : "/opt/homebrew/Cellar/cmake/3.28.1/bin/cmake",
+			"cpack" : "/opt/homebrew/Cellar/cmake/3.28.1/bin/cpack",
+			"ctest" : "/opt/homebrew/Cellar/cmake/3.28.1/bin/ctest",
+			"root" : "/opt/homebrew/Cellar/cmake/3.28.1/share/cmake"
 		},
 		"version" : 
 		{
 			"isDirty" : false,
 			"major" : 3,
-			"minor" : 27,
-			"patch" : 8,
-			"string" : "3.27.8",
+			"minor" : 28,
+			"patch" : 1,
+			"string" : "3.28.1",
 			"suffix" : ""
 		}
 	},
@@ -35,7 +35,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cache-v2-725bc0eaa8cc0bf03612.json",
+			"jsonFile" : "cache-v2-7bf4353c1929119a48af.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -44,7 +44,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cmakeFiles-v1-097ba16bf161d1c7fbb6.json",
+			"jsonFile" : "cmakeFiles-v1-092c076262009dd7306f.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
@@ -66,7 +66,7 @@
 	{
 		"cache-v2" : 
 		{
-			"jsonFile" : "cache-v2-725bc0eaa8cc0bf03612.json",
+			"jsonFile" : "cache-v2-7bf4353c1929119a48af.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -76,7 +76,7 @@
 		},
 		"cmakeFiles-v1" : 
 		{
-			"jsonFile" : "cmakeFiles-v1-097ba16bf161d1c7fbb6.json",
+			"jsonFile" : "cmakeFiles-v1-092c076262009dd7306f.json",
 			"kind" : "cmakeFiles",
 			"version" : 
 			{
